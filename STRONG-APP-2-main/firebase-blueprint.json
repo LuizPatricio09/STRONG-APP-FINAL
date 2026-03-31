@@ -1,0 +1,89 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "User personal data and goals",
+      "type": "object",
+      "properties": {
+        "nome": { "type": "string" },
+        "peso": { "type": "number" },
+        "altura": { "type": "number" },
+        "objetivo": { "type": "string" }
+      },
+      "required": ["nome"]
+    },
+    "Workout": {
+      "title": "Workout",
+      "description": "A single workout session",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "date": { "type": "string", "format": "date-time" },
+        "diaSemana": { "type": "integer" },
+        "nomeDia": { "type": "string" },
+        "duracao": { "type": "integer" },
+        "observacoes": { "type": "string" }
+      },
+      "required": ["name", "date", "diaSemana", "nomeDia"]
+    },
+    "Exercise": {
+      "title": "Exercise",
+      "description": "An exercise within a workout",
+      "type": "object",
+      "properties": {
+        "nome": { "type": "string" },
+        "musculo_principal": { "type": "string" },
+        "musculos_secundarios": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["nome", "musculo_principal"]
+    },
+    "Set": {
+      "title": "Set",
+      "description": "A single set of an exercise",
+      "type": "object",
+      "properties": {
+        "numero": { "type": "integer" },
+        "carga_kg": { "type": "number" },
+        "repeticoes": { "type": "integer" },
+        "tipo_serie": { "type": "string", "enum": ["valida", "ajuste", "aquecimento"] },
+        "concluida": { "type": "boolean" }
+      },
+      "required": ["numero", "carga_kg", "repeticoes", "tipo_serie"]
+    },
+    "CatalogExercise": {
+      "title": "Catalog Exercise",
+      "description": "Global catalog of exercises",
+      "type": "object",
+      "properties": {
+        "nome": { "type": "string" },
+        "musculo_principal": { "type": "string" },
+        "musculos_secundarios": { "type": "array", "items": { "type": "string" } },
+        "equipamento": { "type": "string" },
+        "tipo": { "type": "string", "enum": ["Composto", "Isolado"] }
+      },
+      "required": ["nome", "musculo_principal", "tipo"]
+    }
+  },
+  "firestore": {
+    "/usuarios/{userId}/perfil/dados": {
+      "schema": "UserProfile",
+      "description": "User profile data"
+    },
+    "/usuarios/{userId}/treinos": {
+      "schema": "Workout",
+      "description": "User workout history"
+    },
+    "/usuarios/{userId}/treinos/{treinoId}/exercicios": {
+      "schema": "Exercise",
+      "description": "Exercises in a workout"
+    },
+    "/usuarios/{userId}/treinos/{treinoId}/exercicios/{exercicioId}/series": {
+      "schema": "Set",
+      "description": "Sets in an exercise"
+    },
+    "/exercicios_catalogo": {
+      "schema": "CatalogExercise",
+      "description": "Global exercise catalog"
+    }
+  }
+}
